@@ -8,21 +8,14 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         
         {/* LOGO CON ANIMACIÓN */}
-        <h1 className="text-2xl font-extrabold text-white tracking-wider brand-animate">
-          KhipuPredict
-        </h1>
+        <div className="w-full h-[70px] bg-[#111] border-b border-gray-800 flex items-center justify-center">
+      <h1 className="text-2xl font-extrabold text-white tracking-wider brand-animate">
+        KhipuPredict
+      </h1>
+    </div>
 
         {/* DESKTOP MENU */}
         <div className="hidden md:flex gap-8 text-gray-300 font-medium">
-          <button className="hover:text-white transition-all duration-200">
-            Inicio
-          </button>
-          <button className="hover:text-white transition-all duration-200">
-            Acerca
-          </button>
-          <button className="hover:text-white transition-all duration-200">
-            Contactos
-          </button>
         </div>
 
         {/* BOTÓN MOBILE */}

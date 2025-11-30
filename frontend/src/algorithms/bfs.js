@@ -1,19 +1,22 @@
-// src/algorithms/dfs.js
-export function dfs(startId, graph) {
-  // graph: { nodes: Map, edges: [ {from,to,...} ] }
+// src/algorithms/bfs.js
+export function bfs(startId, graph) {
   const adj = buildAdj(graph.edges);
   const visited = new Set();
+  const q = [startId];
   const order = [];
 
-  function visit(u) {
-    if (visited.has(u)) return;
-    visited.add(u);
+  visited.add(startId);
+  while (q.length) {
+    const u = q.shift();
     order.push(u);
     const neighbors = adj.get(u) || [];
-    for (const v of neighbors) visit(v);
+    for (const v of neighbors) {
+      if (!visited.has(v)) {
+        visited.add(v);
+        q.push(v);
+      }
+    }
   }
-
-  visit(startId);
   return order;
 }
 

@@ -6,6 +6,7 @@ import KhipuMap from "./KhipuMap";
 
 import museumCoords from "../data/museumCoords.json";
 
+
 // Tipo para cada museo
 interface MuseumCoord {
   lat: number;
@@ -16,7 +17,7 @@ interface MuseumCoord {
 const museums = museumCoords as Record<string, MuseumCoord>;
 
 export default function Layout() {
-  // MAPA: museo seleccionado
+   // MAPA: museo seleccionado
   const [selectedMuseumCoords, setSelectedMuseumCoords] =
     useState<MuseumCoord | null>(null);
 
@@ -26,9 +27,15 @@ export default function Layout() {
   // PANEL DERECHO: khipu seleccionado
   const [selectedKhipu, setSelectedKhipu] = useState<any | null>(null);
 
-  // ESTADOS PARA DESPLEGAR PANEL IZQUIERDO Y DERECHO
+  // ESTADOS PARA PANEL IZQUIERDO Y DERECHO
   const [leftOpen, setLeftOpen] = useState(true);
   const [rightOpen, setRightOpen] = useState(true);
+
+  // RUTAS ÓPTIMAS (se guardan como un solo objeto con path de IDs)
+const [routeResults, setRouteResults] = useState<any[] | null>(null);
+
+// Mostrar / ocultar rutas en el mapa
+const [showRoutes, setShowRoutes] = useState<boolean>(false);
 
   // CUANDO SELECCIONAN MUSEO DESDE EL PANEL IZQUIERDO
   function handleMuseumSelect(museumName: string) {
@@ -73,7 +80,7 @@ export default function Layout() {
           className={`
             border-r border-gray-700 overflow-y-auto bg-[#1a1a1a] relative
             transition-[width] duration-300 
-            ${leftOpen ? "w-[300px]" : "w-[40px]"}
+            ${leftOpen ? "w-[450px]" : "w-[40px]"}
           `}
         >
           {/* BOTÓN */}
@@ -112,8 +119,9 @@ export default function Layout() {
         >
           <KhipuMap
             selectedMuseumCoords={selectedMuseumCoords}
-            leftOpen={leftOpen}
-            rightOpen={rightOpen}
+  leftOpen={leftOpen}
+  rightOpen={rightOpen}
+    routeResults={showRoutes ? routeResults : null}
           />
         </div>
 
@@ -122,7 +130,7 @@ export default function Layout() {
           className={`
             border-l border-gray-700 overflow-y-auto bg-[#1a1a1a] relative
             transition-[width] duration-300
-            ${rightOpen ? "w-[700px]" : "w-[40px]"}
+            ${rightOpen ? "w-[500px]" : "w-[40px]"}
           `}
         >
           {/* BOTÓN */}
@@ -136,10 +144,15 @@ export default function Layout() {
           {rightOpen && (
             <div className="mt-8 p-4">
               <RightPanel
-                selectedMuseum={selectedMuseum}
-                selectedKhipu={selectedKhipu}
-                onBack={handleBack}
-              />
+  selectedMuseum={selectedMuseum}
+  selectedKhipu={selectedKhipu}
+  onBack={handleBack}
+  routeResults={routeResults}
+  setRouteResults={setRouteResults}
+  showRoutes={showRoutes}
+  setShowRoutes={setShowRoutes}
+/>
+
             </div>
           )}
         </div>
