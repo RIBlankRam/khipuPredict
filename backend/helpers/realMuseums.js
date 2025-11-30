@@ -1,0 +1,21 @@
+export const REAL_MUSEUMS = [
+  "American Museum of Natural History, NY",
+  "Centro Mallqui, Leymebamba, Amazonas",
+  "Ethnologisches Museum, Berlin, Germany",
+  "Field Museum of Natural History, Chicago, IL",
+  "Hood Museum of Art, Dartmouth College",
+  "Joslyn Art Museum, Omaha, Nebraska",
+  "Lowe Art Museum, University of Miami",
+  "Lowie Museum, UC Berkeley",
+  "Musée du Quai Branly, Paris",
+  "Museo de Arte Amano, Lima",
+  "Museo Nacional de Arqueología, Antropología e Historia del Perú",
+  "Museo de Ica",
+  "Museo Chileno de Arte Precolombino",
+  "Museo Larco",
+  "Museum für Völkerkunde, Vienna",
+  "Royal Ontario Museum, Toronto",
+  "Smithsonian National Museum, Washington D.C.",
+  "Museo Temple Radicati, Huaraz",
+  "Museo de Sitio de Pachacamac"
+];

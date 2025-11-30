@@ -1,0 +1,21 @@
+export const MUSEUM_COORDS = {
+  "American Museum of Natural History, NY": { lat: 40.781324, lng: -73.973988 },
+  "Centro Mallqui, Leymebamba, Amazonas": { lat: -6.698759, lng: -77.770344 },
+  "Ethnologisches Museum, Berlin, Germany": { lat: 52.507565, lng: 13.290873 },
+  "Field Museum of Natural History, Chicago, IL": { lat: 41.866261, lng: -87.616977 },
+  "Hood Museum of Art, Dartmouth College": { lat: 43.702245, lng: -72.289553 },
+  "Joslyn Art Museum, Omaha, Nebraska": { lat: 41.263885, lng: -95.932351 },
+  "Lowe Art Museum, University of Miami": { lat: 25.719731, lng: -80.276808 },
+  "Lowie Museum, UC Berkeley": { lat: 37.871899, lng: -122.260355 },
+  "Musée du Quai Branly, Paris": { lat: 48.860814, lng: 2.297717 },
+  "Museo de Arte Amano, Lima": { lat: -12.10863, lng: -77.03727 },
+  "Museo Nacional de Arqueología, Antropología e Historia del Perú": { lat: -12.067414, lng: -77.049535 },
+  "Museo de Ica": { lat: -14.075627, lng: -75.734833 },
+  "Museo Chileno de Arte Precolombino": { lat: -33.437178, lng: -70.648389 },
+  "Museo Larco": { lat: -12.074126, lng: -77.067497 },
+  "Museum für Völkerkunde, Vienna": { lat: 48.203449, lng: 16.359355 },
+  "Royal Ontario Museum, Toronto": { lat: 43.667709, lng: -79.394777 },
+  "Smithsonian National Museum, Washington D.C.": { lat: 38.891266, lng: -77.026065 },
+  "Museo Temple Radicati, Huaraz": { lat: -9.526879, lng: -77.529595 },
+  "Museo de Sitio de Pachacamac": { lat: -12.314113, lng: -76.848331 }
+};
