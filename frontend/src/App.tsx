@@ -1,5 +1,12 @@
+import { Routes, Route } from "react-router-dom";
 import Layout from "./Components/Layout";
+import GuiaKhipu from "./pages/Guide";
 
 export default function App() {
-    return <Layout />;
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />} />
+      <Route path="/guia" element={<GuiaKhipu />} />
+    </Routes>
+  );
 }

@@ -14,7 +14,7 @@ import customMarker from "../assets/khipu-marker.png";
 import museumCoordsJson from "../data/museumCoords.json";
 import type { MuseumCoordsMap } from "../types/MuseumCoords";
 
-// Fix Leaflet icons
+// Fix Leaflet default icons
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
@@ -25,15 +25,15 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-// Custom icon
+// Custom icon (khipu marker)
 const customIcon = L.icon({
   iconUrl: customMarker,
-  iconSize: [38, 38],
-  iconAnchor: [19, 38],
-  popupAnchor: [0, -38],
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  popupAnchor: [0, -35],
 });
 
-// Museum coordinates JSON
+// Museums JSON
 const museumCoords = museumCoordsJson as MuseumCoordsMap;
 
 /* ---------------------------------------------------------
@@ -41,11 +41,9 @@ const museumCoords = museumCoordsJson as MuseumCoordsMap;
 ---------------------------------------------------------- */
 function MapMover({ coords }: { coords: { lat: number; lng: number } | null }) {
   const map = useMap();
-
   if (coords) {
     map.setView([coords.lat, coords.lng], 10, { animate: true });
   }
-
   return null;
 }
 
@@ -90,7 +88,7 @@ const KHIPU_COLORS = [
 ];
 
 /* ---------------------------------------------------------
-   KhipuMap principal (con rutas coloridas)
+   Main KhipuMap improved
 ---------------------------------------------------------- */
 export default function KhipuMap({
   selectedMuseumCoords,
@@ -105,6 +103,7 @@ export default function KhipuMap({
 }) {
   const center: LatLngExpression = [-12.0464, -77.0428]; // Lima
 
+  // Prepare markers
   const markers = Object.entries(museumCoords).map(
     ([museumName, coords], index) => ({
       id: index + 1,
@@ -117,7 +116,7 @@ export default function KhipuMap({
 
   /* ---------------------------------------------------------
      Convert Bellman-Ford paths → colorized polylines
----------------------------------------------------------- */
+  ---------------------------------------------------------- */
   const routePolylines =
     routeResults?.flatMap((r, routeIndex) => {
       if (!r.path || r.path.length < 2) return [];
@@ -133,7 +132,7 @@ export default function KhipuMap({
 
         if (!A || !B) continue;
 
-        // Color estilo khipu
+        // Select khipu color
         const color = KHIPU_COLORS[(i + routeIndex) % KHIPU_COLORS.length];
 
         segments.push({
@@ -154,15 +153,31 @@ export default function KhipuMap({
         style={{
           height: "80vh",
           width: "85%",
-          borderRadius: "14px",
+          borderRadius: "18px",
           overflow: "hidden",
-          boxShadow: "0 0 25px rgba(0,0,0,0.4)",
+          boxShadow: "0 0 35px rgba(0,0,0,0.6)",
+          background: "linear-gradient(135deg, #1f1f1f, #2a2a2a)",
         }}
       >
-        <MapContainer center={center} zoom={3} style={{ height: "100%", width: "100%" }}>
+        <MapContainer center={center}
+  zoom={3}
+  style={{ height: "100%", width: "100%" }}
+
+  /* Limitar mapa global (sin repetición) */
+  maxBounds={[[-85, -180], [85, 180]]}
+  maxBoundsViscosity={1.0}
+  worldCopyJump={false} 
+  minZoom={2}
+  maxZoom={40}
+  zoomSnap={0.25}>
+          {/* New Dark Modern Tile */}
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
+            url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+            attribution='&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap'
+            /* PREVENIR MAPA DUPLICADO */
+    noWrap={true}
+    bounds={[[-85, -180], [85, 180]]}
+    
           />
 
           <MapMover coords={selectedMuseumCoords} />
@@ -176,20 +191,29 @@ export default function KhipuMap({
             </MarkerWithZoom>
           ))}
 
-          {/* ===============================
-              ROUTES MULTICOLOR (KHIPU STYLE)
-              =============================== */}
+          {/* =====================================================
+                ROUTES MULTICOLOR (KHIPU STYLE + GLOW + ANIMATION)
+              ===================================================== */}
           {routePolylines.map((s, idx) => (
-            <Polyline
-              key={idx}
-              positions={s.positions}
-              pathOptions={{
-                color: s.color,
-                weight: 5,
-                opacity: 0.9,
-                lineCap: "round",
-              }}
-            />
+            <>
+
+              {/* Glow layer (halo) */}
+              
+              {/* Main colorful line */}
+              <Polyline
+                key={`main-${idx}`}
+                positions={s.positions}
+                pathOptions={{
+                  color: s.color,
+                  weight: 6,
+                  opacity: 0.95,
+                  lineCap: "round",
+                  dashArray: "12 10",
+                  className: "khipu-animated",
+                }}
+              />
+
+            </>
           ))}
 
           <ResizeMap deps={[selectedMuseumCoords]} />

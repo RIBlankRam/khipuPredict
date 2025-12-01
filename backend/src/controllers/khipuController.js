@@ -1,6 +1,5 @@
-import { KhipuModel } from "../models/khipuModel.js";
+import { KhipuModel } from "../Models/khipuModel.js";
 
-// LISTA DE MUSEOS REALES
 const REAL_MUSEUMS = [
   "American Museum of Natural History, NY",
   "Centro Mallqui, Leymebamba, Amazonas",
@@ -35,7 +34,6 @@ function autoAssignMuseum(k) {
   if (prov.includes("ica")) return "Museo de Ica";
   if (prov.includes("pachacamac")) return "Museo de Sitio de Pachacamac";
   if (prov.includes("huaraz")) return "Museo Temple Radicati, Huaraz";
-
   if (REAL_MUSEUMS.includes(museum)) return museum;
 
   return null;
@@ -56,12 +54,13 @@ export const KhipuController = {
           id: k.id,
           code: k.code,
           investigator: k.investigator,
-          provenance: k.provenance
+          provenance: k.provenance,
         });
       }
 
       res.json(grouped);
     } catch (err) {
+      console.error("Error en getGrouped:", err);
       res.status(500).json({ error: "Error al agrupar khipus" });
     }
   },
@@ -71,31 +70,29 @@ export const KhipuController = {
       const rows = await KhipuModel.getAll();
       res.json(rows);
     } catch (err) {
+      console.error("Error en getAll:", err);
       res.status(500).json({ error: err.message });
     }
   },
 
   getById: async (req, res) => {
-  try {
-    const khipu = await KhipuModel.getById(req.params.id);
-    if (!khipu) return res.status(404).json({ error: "No encontrado" });
+    try {
+      const khipu = await KhipuModel.getById(req.params.id);
+      if (!khipu) return res.status(404).json({ error: "No encontrado" });
 
-    // 1. Obtener cuerdas + nudos
-    const cordData = await KhipuModel.getCordsWithKnots(khipu.id);
+      // 👉 CUERDAS COMPLETAS: colores + nudos normalizados
+      const cords = await KhipuModel.getCordsFull(khipu.id);
 
-    // 2. (opcional) grafo
-    const graphStructure = KhipuModel.buildGraph(cordData);
+      const graphStructure = KhipuModel.buildGraph(cords);
 
-    res.json({
-      khipu,
-      cords: cordData,
-      graph: graphStructure,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
-}
-  
+      res.json({
+        khipu,
+        cords,
+        graph: graphStructure,
+      });
+    } catch (err) {
+      console.error("Error en getById:", err);
+      res.status(500).json({ error: err.message });
+    }
+  },
 };
